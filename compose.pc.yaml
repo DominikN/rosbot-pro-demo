@@ -3,7 +3,7 @@ version: "2.3"
 services:
   # ROS Foxy navigation
   nav2:
-    image: husarion/nav2:foxy
+    image: husarion/nav2:galactic-latest
     tty: true
     restart: on-failure
     network_mode: host
@@ -16,11 +16,7 @@ services:
   # ROS Foxy Rviz2 VNC
   rviz2:
     image: husarion/ros2-desktop-vnc:latest
-    restart: on-failure
     network_mode: host
-    ipc: host
-    environment:
-      - "ROS_DOMAIN_ID=0"
     volumes:
       - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
     ports: 
