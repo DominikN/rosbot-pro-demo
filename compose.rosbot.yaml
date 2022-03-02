@@ -1,17 +1,31 @@
+# Quick Start (at fist stop ROS Master if working on host)
+# $ docker compose -f compose.rosbot.yaml up
+
 version: "2.3"
 
 services:
-  # ROS Noetic + ROS 2 Foxy
+  # ROS Noetic + ROS 2 Galactic
   bridge:
     image: ros:galactic-ros1-bridge
     restart: on-failure
     network_mode: host
     ipc: host
     environment:
-      - "ROS_IP=127.0.0.1"
-      - "ROS_DOMAIN_ID=2"
+      - ROS_IP=127.0.0.1
+      - ROS_MASTER_URI=http://127.0.0.1:22322
+      - ROS_DOMAIN_ID=2
     command: ros2 run ros1_bridge dynamic_bridge
 
+  # ROS Master (using custom port in case Master is already running on host OS)
+  ros-master:
+    image: ros:melodic-ros-core
+    restart: on-failure
+    network_mode: host
+    ipc: host
+    environment:
+      - ROS_IP=127.0.0.1
+      - ROS_MASTER_URI=http://127.0.0.1:22322
+    command: stdbuf -o L roscore -p 22322
 
   # ROS Melodic rosbot hardware layer
   rosbot:
@@ -20,10 +34,11 @@ services:
     network_mode: host
     ipc: host
     environment:
-      - "ROS_IP=127.0.0.1"
-      - "SERIAL_PORT=/dev/ttyS4" # default: ttyS1 - rosbot2.0; ttyS4 - rosbot2.0 `pro
+      - ROS_IP=127.0.0.1
+      - ROS_MASTER_URI=http://127.0.0.1:22322
+      - SERIAL_PORT=/dev/ttyS4 # default: ttyS1 - rosbot2.0; ttyS4 - rosbot2.0 `pro
     devices:
-      - "/dev/ttyS4"   # must match environment SERIAL_PORT 
+      - /dev/ttyS4   # must match environment SERIAL_PORT 
     command: roslaunch rosbot_description rosbot_docker.launch
     
   # ROS Melodic Rplidar
@@ -33,7 +48,8 @@ services:
     network_mode: host
     ipc: host
     environment:
-      - "ROS_IP=127.0.0.1"
+      - ROS_IP=127.0.0.1
+      - ROS_MASTER_URI=http://127.0.0.1:22322
     devices:
       - /dev/ttyUSB0
     command: roslaunch rplidar_ros rplidar_a3.launch # For Rosbot 2.0 PRO use roslaunch rplidar_ros rplidar_a3.launch
