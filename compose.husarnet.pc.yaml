@@ -5,11 +5,10 @@
 version: "2.3"
 
 services:
-  # ROS Foxy navigation
+  # ROS Galactic navigation 2
   nav2:
     image: husarion/nav2:galactic-latest
     network_mode: service:husarnet
-    tty: true
     restart: on-failure
     environment:
       - CYCLONEDDS_URI=file:///cyclonedds.xml
