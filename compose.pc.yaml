@@ -17,9 +17,7 @@ services:
     command: ros2 launch husarion_nav2 bringup_both.launch.py
 
   rviz:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: husarion/rviz2
     network_mode: host
     ipc: host
     runtime: nvidia
@@ -31,4 +29,3 @@ services:
     volumes: 
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
-    # command: ros2 run rviz2 rviz2
