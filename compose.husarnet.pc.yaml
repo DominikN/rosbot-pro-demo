@@ -1,6 +1,6 @@
 # Quick Start
 # $ xhost local:root
-# $ docker compose -f compose.pc.yaml up
+# $ docker compose -f compose.husarnet.pc.yaml up
 
 version: "2.3"
 
@@ -8,24 +8,40 @@ services:
   # ROS Foxy navigation
   nav2:
     image: husarion/nav2:galactic-latest
+    network_mode: service:husarnet
     tty: true
     restart: on-failure
-    network_mode: host
-    ipc: host
     environment:
-      - ROS_DOMAIN_ID=2
+      - CYCLONEDDS_URI=file:///cyclonedds.xml
+    volumes:
+      - ./cyclonedds.xml:/cyclonedds.xml
     command: ros2 launch husarion_nav2 bringup_both.launch.py
 
   rviz:
     image: husarion/rviz2
-    network_mode: host
-    ipc: host
+    network_mode: service:husarnet
     runtime: nvidia
     environment:
-      - ROS_DOMAIN_ID=2
       - DISPLAY
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
-    volumes: 
+      - CYCLONEDDS_URI=file:///cyclonedds.xml
+    volumes:
+      - ./cyclonedds.xml:/cyclonedds.xml
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
+
+  husarnet:
+    image: husarnet/husarnet
+    restart: on-failure
+    volumes:
+      - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0  # Husarnet is using IPv6 for the internal connections
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    environment:
+      - HOSTNAME=rviz
+      - JOINCODE=${HUSARNET_JOINCODE}
