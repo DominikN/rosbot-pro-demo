@@ -8,15 +8,15 @@ A demo showing how to use ROSbot PRO with Nav2 and RViz
 2. Clone this repo to both: ROSbot PRO and laptop
 3. Launch:
 
-    - On laptop:
+  - On laptop:
+    
+    ```bash
+    xhost local:root
+    docker compose -f compose.pc.yaml up
+    ```
 
-        ```bash
-        xhost local:root
-        docker compose -f compose.pc.yaml up
-        ```
+  - On ROSbot PRO:
 
-    - On ROSbot PRO:
-
-        ```
-        docker compose -f compose.rosbot.yaml up
-        ```
+    ```bash
+    docker compose -f compose.rosbot.yaml up
+    ```
