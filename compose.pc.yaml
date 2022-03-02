@@ -1,3 +1,7 @@
+# Quick Start
+# $ xhost local:root
+# $ docker compose -f compose.pc.yaml up
+
 version: "2.3"
 
 services:
@@ -9,16 +13,22 @@ services:
     network_mode: host
     ipc: host
     environment:
-      - "ROS_DOMAIN_ID=0"
+      - "ROS_DOMAIN_ID=2"
     command: ros2 launch husarion_nav2 bringup_both.launch.py
 
-
-  # ROS Foxy Rviz2 VNC
-  rviz2:
-    image: husarion/ros2-desktop-vnc:latest
+  rviz:
+    build:
+      context: ./
+      dockerfile: Dockerfile
     network_mode: host
-    volumes:
+    ipc: host
+    runtime: nvidia
+    environment:
+      - ROS_DOMAIN_ID=2
+      - DISPLAY
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes: 
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
-    ports: 
-      - 6080:80
-    shm_size: '512m'
+    command: ros2 run rviz2 rviz2
