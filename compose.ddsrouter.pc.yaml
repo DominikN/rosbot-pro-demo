@@ -10,10 +10,6 @@ services:
     image: husarion/nav2:galactic-latest
     network_mode: service:husarnet
     restart: on-failure
-    environment:
-      - CYCLONEDDS_URI=file:///cyclonedds.xml
-    volumes:
-      - ./cyclonedds.xml:/cyclonedds.xml
     command: ros2 launch husarion_nav2 bringup_both.launch.py
 
   rviz:
@@ -24,15 +20,22 @@ services:
       - DISPLAY
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
-      - CYCLONEDDS_URI=file:///cyclonedds.xml
     volumes:
-      - ./cyclonedds.xml:/cyclonedds.xml
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
+
+  dds_router_talker:
+    image: ghcr.io/dominikn/ros-galactic-fastdds:latest
+    restart: always
+    network_mode: service:husarnet
+    volumes:
+      - ./router-config.pc.yaml:/config.yaml
+    command: bash -c "/wait_for_discovery_server.sh && ddsrouter -c /config.yaml -r 10"
 
   husarnet:
     image: husarnet/husarnet
     restart: on-failure
+    network_mode: host
     volumes:
       - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
     sysctls:
@@ -44,16 +47,3 @@ services:
     environment:
       - HOSTNAME=rviz
       - JOINCODE=${HUSARNET_JOINCODE}
-
-
-  # husarnet:
-  #   image: husarnet/husarnet
-  #   restart: on-failure
-  #   network_mode: host
-  #   volumes:
-  #     - /var/lib/husarnet
-  #   cap_add:
-  #     - NET_ADMIN
-  #   environment:
-  #     - HOSTNAME=rviz
-  #     - JOINCODE=${HUSARNET_JOINCODE}
