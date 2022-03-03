@@ -7,7 +7,7 @@ services:
   # ROS Noetic + ROS 2 Galactic
   bridge:
     image: ros:galactic-ros1-bridge
-    restart: on-failure
+    restart: unless-stopped
     network_mode: host
     ipc: host
     environment:
@@ -18,7 +18,7 @@ services:
   # ROS Master (using custom port in case Master is already running on host OS)
   ros-master:
     image: ros:melodic-ros-core
-    restart: on-failure
+    restart: unless-stopped
     network_mode: host
     ipc: host
     environment:
@@ -28,7 +28,7 @@ services:
   # ROS Melodic rosbot hardware layer
   rosbot:
     image: husarion/rosbot   
-    restart: on-failure
+    restart: unless-stopped
     network_mode: host
     ipc: host
     environment:
@@ -41,7 +41,7 @@ services:
   # ROS Melodic Rplidar
   rplidar:
     image: husarion/rplidar:latest
-    restart: on-failure
+    restart: unless-stopped
     network_mode: host
     ipc: host
     environment:

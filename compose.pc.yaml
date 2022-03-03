@@ -8,7 +8,7 @@ services:
   # ROS Foxy navigation
   nav2:
     image: husarion/nav2:galactic-latest
-    restart: on-failure
+    restart: unless-stopped
     network_mode: host
     ipc: host
     environment:
@@ -17,6 +17,7 @@ services:
 
   rviz:
     image: husarion/rviz2
+    restart: unless-stopped
     network_mode: host
     ipc: host
     runtime: nvidia

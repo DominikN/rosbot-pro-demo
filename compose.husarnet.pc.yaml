@@ -9,7 +9,7 @@ services:
   nav2:
     image: husarion/nav2:galactic-latest
     network_mode: service:husarnet
-    restart: on-failure
+    restart: unless-stopped
     environment:
       - CYCLONEDDS_URI=file:///cyclonedds.xml
     volumes:
@@ -19,6 +19,7 @@ services:
   rviz:
     image: husarion/rviz2
     network_mode: service:husarnet
+    restart: unless-stopped
     runtime: nvidia
     environment:
       - DISPLAY
@@ -30,30 +31,29 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
 
-  husarnet:
-    image: husarnet/husarnet
-    restart: on-failure
-    volumes:
-      - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
-    sysctls:
-      - net.ipv6.conf.all.disable_ipv6=0  # Husarnet is using IPv6 for the internal connections
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun
-    environment:
-      - HOSTNAME=rviz
-      - JOINCODE=${HUSARNET_JOINCODE}
-
-
   # husarnet:
   #   image: husarnet/husarnet
-  #   restart: on-failure
-  #   network_mode: host
+  #   restart: unless-stopped
   #   volumes:
-  #     - /var/lib/husarnet
+  #     - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
+  #   sysctls:
+  #     - net.ipv6.conf.all.disable_ipv6=0  # Husarnet is using IPv6 for the internal connections
   #   cap_add:
   #     - NET_ADMIN
+  #   devices:
+  #     - /dev/net/tun
   #   environment:
   #     - HOSTNAME=rviz
   #     - JOINCODE=${HUSARNET_JOINCODE}
+
+  husarnet:
+    image: husarnet/husarnet
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /var/lib/husarnet
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - HOSTNAME=rviz
+      - JOINCODE=${HUSARNET_JOINCODE}

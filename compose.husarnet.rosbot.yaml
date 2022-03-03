@@ -7,7 +7,7 @@ services:
   # ROS Noetic + ROS 2 Galactic
   bridge:
     image: ros:galactic-ros1-bridge
-    restart: on-failure
+    restart: unless-stopped
     network_mode: service:husarnet
     volumes:
       - ./dds-config.xml:/dds-config.xml
@@ -19,13 +19,13 @@ services:
   # ROS Master (using custom port in case Master is already running on host OS)
   ros-master:
     image: ros:melodic-ros-core
-    restart: on-failure
+    restart: unless-stopped
     command: stdbuf -o L roscore
 
   # ROS Melodic rosbot hardware layer
   rosbot:
     image: husarion/rosbot   
-    restart: on-failure
+    restart: unless-stopped
     environment:
       - ROS_MASTER_URI=http://ros-master:11311
       - SERIAL_PORT=/dev/ttyS4 # default: ttyS1 - rosbot2.0; ttyS4 - rosbot2.0 `pro
@@ -36,24 +36,36 @@ services:
   # ROS Melodic Rplidar
   rplidar:
     image: husarion/rplidar:latest
-    restart: on-failure
+    restart: unless-stopped
     environment:
       - ROS_MASTER_URI=http://ros-master:11311
     devices:
       - /dev/ttyUSB0
     command: roslaunch --wait rplidar_ros rplidar_a3.launch # For Rosbot 2.0 PRO use roslaunch rplidar_ros rplidar_a3.launch
 
+  # husarnet:
+  #   image: husarnet/husarnet
+  #   restart: unless-stopped
+  #   volumes:
+  #     - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
+  #   sysctls:
+  #     - net.ipv6.conf.all.disable_ipv6=0  # Husarnet is using IPv6 for the internal connections
+  #   cap_add:
+  #     - NET_ADMIN
+  #   devices:
+  #     - /dev/net/tun
+  #   environment:
+  #     - HOSTNAME=rosbot
+  #     - JOINCODE=${HUSARNET_JOINCODE}
+
   husarnet:
     image: husarnet/husarnet
-    restart: on-failure
+    restart: unless-stopped
+    network_mode: host
     volumes:
-      - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
-    sysctls:
-      - net.ipv6.conf.all.disable_ipv6=0  # Husarnet is using IPv6 for the internal connections
+      - /var/lib/husarnet
     cap_add:
       - NET_ADMIN
-    devices:
-      - /dev/net/tun
     environment:
       - HOSTNAME=rosbot
       - JOINCODE=${HUSARNET_JOINCODE}
