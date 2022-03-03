@@ -66,6 +66,8 @@ services:
       - /var/lib/husarnet
     cap_add:
       - NET_ADMIN
+    devices:
+      - /dev/net/tun
     environment:
       - HOSTNAME=rosbot
       - JOINCODE=${HUSARNET_JOINCODE}
