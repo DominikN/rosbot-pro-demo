@@ -24,7 +24,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
 
-  dds_router_talker:
+  dds_router:
     image: ghcr.io/dominikn/ros-galactic-fastdds:latest
     restart: always
     network_mode: service:husarnet

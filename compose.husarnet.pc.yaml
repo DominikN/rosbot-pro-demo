@@ -24,9 +24,9 @@ services:
       - DISPLAY
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
-      - CYCLONEDDS_URI=file:///cyclonedds.xml
+      - CYCLONEDDS_URI=file:///dds-config.xml
     volumes:
-      - ./cyclonedds.xml:/cyclonedds.xml
+      - ./dds-config.xml:/dds-config.xml
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
 

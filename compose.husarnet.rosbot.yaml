@@ -10,10 +10,10 @@ services:
     restart: on-failure
     network_mode: service:husarnet
     volumes:
-      - ./cyclonedds.xml:/cyclonedds.xml
+      - ./dds-config.xml:/dds-config.xml
     environment:
       - ROS_MASTER_URI=http://ros-master:11311
-      - CYCLONEDDS_URI=file:///cyclonedds.xml
+      - CYCLONEDDS_URI=file:///dds-config.xml
     command: ros2 run ros1_bridge dynamic_bridge
 
   # ROS Master (using custom port in case Master is already running on host OS)
