@@ -33,6 +33,7 @@ services:
   husarnet:
     image: husarnet/husarnet
     restart: on-failure
+    network_mode: host
     volumes:
       - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
     sysctls:
@@ -44,3 +45,16 @@ services:
     environment:
       - HOSTNAME=rviz
       - JOINCODE=${HUSARNET_JOINCODE}
+
+
+  # husarnet:
+  #   image: husarnet/husarnet
+  #   restart: on-failure
+  #   network_mode: host
+  #   volumes:
+  #     - /var/lib/husarnet
+  #   cap_add:
+  #     - NET_ADMIN
+  #   environment:
+  #     - HOSTNAME=rviz
+  #     - JOINCODE=${HUSARNET_JOINCODE}

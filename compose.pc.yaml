@@ -8,7 +8,6 @@ services:
   # ROS Foxy navigation
   nav2:
     image: husarion/nav2:galactic-latest
-    tty: true
     restart: on-failure
     network_mode: host
     ipc: host
