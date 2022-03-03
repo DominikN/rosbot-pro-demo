@@ -35,7 +35,6 @@ services:
   husarnet:
     image: husarnet/husarnet
     restart: on-failure
-    network_mode: host
     volumes:
       - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
     sysctls:
