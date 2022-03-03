@@ -1,6 +1,6 @@
 # Quick Start
 # $ xhost local:root
-# $ docker compose -f compose.husarnet.pc.yaml up
+# $ docker compose -f compose.ddsrouter.pc.yaml up
 
 version: "2.3"
 

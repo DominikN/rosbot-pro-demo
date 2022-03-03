@@ -1,5 +1,5 @@
 # Quick Start (at fist stop ROS Master if working on host)
-# $ docker compose -f compose.husarnet.rosbot.yaml up
+# $ docker compose -f compose.ddsrouter.rosbot.yaml up
 
 version: "2.3"
 
