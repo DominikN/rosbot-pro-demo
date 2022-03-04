@@ -5,17 +5,8 @@
 version: "2.3"
 
 services:
-  # ROS Galactic navigation 2
-  nav2:
-    image: husarion/nav2:galactic-latest
-    network_mode: service:husarnet
-    restart: unless-stopped
-    environment:
-      - CYCLONEDDS_URI=file:///dds-config.xml
-    volumes:
-      - ./dds-config.xml:/dds-config.xml
-    command: ros2 launch husarion_nav2 bringup_both.launch.py
 
+  # ROS Galactic
   rviz:
     image: husarion/rviz2
     network_mode: service:husarnet

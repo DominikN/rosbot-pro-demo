@@ -4,6 +4,18 @@
 version: "2.3"
 
 services:
+
+  # ROS Galactic
+  nav2:
+    image: husarion/nav2:galactic-latest
+    network_mode: service:husarnet
+    restart: unless-stopped
+    environment:
+      - CYCLONEDDS_URI=file:///dds-config.xml
+    volumes:
+      - ./dds-config.xml:/dds-config.xml
+    command: ros2 launch husarion_nav2 bringup_both.launch.py
+
   # ROS Noetic + ROS 2 Galactic
   bridge:
     image: ros:galactic-ros1-bridge
@@ -46,6 +58,7 @@ services:
   husarnet:
     image: husarnet/husarnet
     restart: unless-stopped
+    network_mode: host
     volumes:
       - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
     sysctls:
