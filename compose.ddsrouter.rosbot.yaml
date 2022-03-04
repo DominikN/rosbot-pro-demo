@@ -4,6 +4,13 @@
 version: "2.3"
 
 services:
+
+  # ROS Galactic navigation 2
+  nav2:
+    image: husarion/nav2:galactic-latest
+    restart: on-failure
+    command: ros2 launch husarion_nav2 bringup_both.launch.py
+
   # ROS Noetic + ROS 2 Galactic
   bridge:
     image: ros:galactic-ros1-bridge

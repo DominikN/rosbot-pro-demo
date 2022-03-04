@@ -5,16 +5,10 @@
 version: "2.3"
 
 services:
-  # ROS Galactic navigation 2
-  nav2:
-    image: husarion/nav2:galactic-latest
-    network_mode: service:husarnet
-    restart: on-failure
-    command: ros2 launch husarion_nav2 bringup_both.launch.py
 
   rviz:
     image: husarion/rviz2
-    network_mode: service:husarnet
+    # network_mode: service:husarnet
     runtime: nvidia
     environment:
       - DISPLAY

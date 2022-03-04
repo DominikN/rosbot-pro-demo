@@ -70,16 +70,3 @@ services:
       - HOSTNAME=rosbot
       - JOINCODE=${HUSARNET_JOINCODE}
 
-  # husarnet:
-  #   image: husarnet/husarnet
-  #   restart: unless-stopped
-  #   network_mode: host
-  #   volumes:
-  #     - /var/lib/husarnet
-  #   cap_add:
-  #     - NET_ADMIN
-  #   devices:
-  #     - /dev/net/tun
-  #   environment:
-  #     - HOSTNAME=rosbot
-  #     - JOINCODE=${HUSARNET_JOINCODE}
