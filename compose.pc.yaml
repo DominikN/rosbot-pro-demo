@@ -5,16 +5,8 @@
 version: "2.3"
 
 services:
-  # ROS Foxy navigation
-  nav2:
-    image: husarion/nav2:galactic-latest
-    restart: unless-stopped
-    network_mode: host
-    ipc: host
-    environment:
-      - ROS_DOMAIN_ID=2
-    command: ros2 launch husarion_nav2 bringup_both.launch.py
 
+  # ROS Galactic
   rviz:
     image: husarion/rviz2
     restart: unless-stopped
@@ -22,7 +14,7 @@ services:
     ipc: host
     runtime: nvidia
     environment:
-      - ROS_DOMAIN_ID=2
+      - ROS_DOMAIN_ID=228
       - DISPLAY
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all

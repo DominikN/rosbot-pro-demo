@@ -4,6 +4,17 @@
 version: "2.3"
 
 services:
+
+  # ROS Galactic
+  nav2:
+    image: husarion/nav2:galactic-latest
+    restart: unless-stopped
+    network_mode: host
+    ipc: host
+    environment:
+      - ROS_DOMAIN_ID=228
+    command: ros2 launch husarion_nav2 bringup_both.launch.py
+
   # ROS Noetic + ROS 2 Galactic
   bridge:
     image: ros:galactic-ros1-bridge
@@ -12,7 +23,7 @@ services:
     ipc: host
     environment:
       - ROS_IP=127.0.0.1
-      - ROS_DOMAIN_ID=2
+      - ROS_DOMAIN_ID=228
     command: ros2 run ros1_bridge dynamic_bridge
 
   # ROS Master (using custom port in case Master is already running on host OS)
