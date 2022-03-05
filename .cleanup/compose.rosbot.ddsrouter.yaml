@@ -1,0 +1,29 @@
+# Quick Start
+# $ docker compose -f compose.rosbot.yaml -f compose.rosbot.ddsrouter.yaml up
+
+version: "2.3"
+
+services:
+
+  dds_router:
+    image: ghcr.io/dominikn/ros-galactic-fastdds:latest
+    restart: always
+    network_mode: service:husarnet
+    volumes:
+      - ./router-config.rosbot.yaml:/config.yaml
+    command: bash -c "ddsrouter -c /config.yaml -r 10"
+
+  husarnet:
+    image: husarnet/husarnet
+    restart: on-failure
+    volumes:
+      - /var/lib/husarnet  # This will persist your Husarnet Client keys, thus IP of the container will be stable/the same between (re)boots
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0  # Husarnet is using IPv6 for the internal connections
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    environment:
+      - HOSTNAME=rosbot
+      - JOINCODE=${HUSARNET_JOINCODE}
