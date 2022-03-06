@@ -10,11 +10,8 @@ services:
   rviz:
     image: husarion/rviz2
     restart: unless-stopped
-    network_mode: host
-    ipc: host
     runtime: nvidia
     environment:
-      - ROS_DOMAIN_ID=228
       - DISPLAY
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all

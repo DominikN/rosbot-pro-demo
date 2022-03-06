@@ -1,25 +1,18 @@
 # Quick Start (at fist stop ROS Master if working on host)
-# $ docker compose -f compose.husarnet.rosbot_net_host.yaml up
+# $ docker compose -f compose.rosbot.yaml -f compose.husarnet.rosbot_net_host.yaml up
 
 version: "2.3"
 
 services:
 
-  # ROS Galactic
   nav2:
-    image: husarion/nav2:galactic-latest
     network_mode: service:husarnet
-    restart: unless-stopped
     environment:
       - CYCLONEDDS_URI=file:///dds-config.xml
     volumes:
       - ./dds-config.xml:/dds-config.xml
-    command: ros2 launch husarion_nav2 bringup_both.launch.py
 
-  # ROS Noetic + ROS 2 Galactic
   bridge:
-    image: ros:galactic-ros1-bridge
-    restart: unless-stopped
     network_mode: service:husarnet
     volumes:
       - ./dds-config.xml:/dds-config.xml
@@ -29,47 +22,29 @@ services:
       - CYCLONEDDS_URI=file:///dds-config.xml
     networks:
       ros_net:
-    command: ros2 run ros1_bridge dynamic_bridge
 
-  # ROS Master (using custom port in case Master is already running on host OS)
   ros-master:
-    image: ros:melodic-ros-core
-    restart: unless-stopped
     environment:
       - ROS_IP=172.32.0.102
     networks:
       ros_net:
         ipv4_address: 172.32.0.102
-    command: stdbuf -o L roscore
 
-  # ROS Melodic rosbot hardware layer
   rosbot:
-    image: husarion/rosbot   
-    restart: unless-stopped
     environment:
       - ROS_IP=172.32.0.101
       - ROS_MASTER_URI=http://172.32.0.102:11311
-      - SERIAL_PORT=/dev/ttyS4 # default: ttyS1 - rosbot2.0; ttyS4 - rosbot2.0 `pro
-    devices:
-      - /dev/ttyS4   # must match environment SERIAL_PORT 
     networks:
       ros_net:
         ipv4_address: 172.32.0.101
-    command: roslaunch --wait rosbot_description rosbot_docker.launch
     
-  # ROS Melodic Rplidar
   rplidar:
-    image: husarion/rplidar:latest
-    restart: unless-stopped
     environment:
       - ROS_IP=172.32.0.100
       - ROS_MASTER_URI=http://172.32.0.102:11311
-    devices:
-      - /dev/ttyUSB0
     networks:
       ros_net:
         ipv4_address: 172.32.0.100
-    command: roslaunch --wait rplidar_ros rplidar_a3.launch # For Rosbot 2.0 PRO use roslaunch rplidar_ros rplidar_a3.launch
 
   husarnet:
     image: husarnet/husarnet

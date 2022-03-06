@@ -4,41 +4,79 @@ A demo showing how to use ROSbot PRO with Nav2 and RViz
 
 ## Quick start
 
+At first Clone this repo to both: ROSbot PRO and laptop:
+
+```
+git clone git@github.com:DominikN/rosbot-pro-demo.git
+```
+
+... and choose one of the following network configurations:
+
 ### In LAN
 
 1. Connect ROSbot PRO and laptop to the same LAN
-2. Clone this repo to both: ROSbot PRO and laptop
+2. Launch:
+
+  - On laptop:
+    
+    ```bash
+    xhost local:root
+    docker compose -f compose.pc.yaml -f compose.pc.lan.yaml up
+    ```
+
+  - On ROSbot PRO:
+
+    ```bash
+    docker compose -f compose.rosbot.yaml -f compose.rosbot.lan.yaml up
+    ```
+
+### Over The Internet (Husarnet)
+
+1. Connect ROSbot PRO and laptop to the same or different networks
+2. Create `.env` file based on the `.env.template` and paste your own Husarnet Join Code here
 3. Launch:
 
   - On laptop:
     
     ```bash
     xhost local:root
-    docker compose -f compose.pc.yaml up
+    docker compose -f compose.pc.yaml -f compose.pc.husarnet.yaml up
     ```
 
   - On ROSbot PRO:
 
     ```bash
-    docker compose -f compose.rosbot.yaml up
+    docker compose -f compose.rosbot.yaml -f compose.rosbot.husarnet.yaml up
     ```
 
-### Over The Internet
+### Over The Internet (Husarnet + DDS Router)
 
 1. Connect ROSbot PRO and laptop to the same or different networks
-2. Clone this repo to both: ROSbot PRO and laptop
-3. Create `.env` file based on the `.env.template` and paste your own Husarnet Join Code here
-4. Launch:
+2. Create `.env` file based on the `.env.template` and paste your own Husarnet Join Code here
+3. Launch:
 
   - On laptop:
     
     ```bash
     xhost local:root
-    docker compose -f compose.husarnet.pc.yaml up
+    docker compose -f compose.pc.yaml -f compose.pc.ddsrouter.yaml up
     ```
 
   - On ROSbot PRO:
 
     ```bash
-    docker compose -f compose.husarnet.rosbot.yaml up
+    docker compose -f compose.rosbot.yaml -f compose.rosbot.ddsrouter.yaml up
+    ```
+
+### No network: run everything on ROSbot PRO
+
+1. Connect the screen, mouse and keyboard to the rear panel of the ROSbot PRO, and open a terminal app.
+2. Launch:
+
+  - On ROSbot PRO:
+
+    ```bash
+    xhost local:root
+    docker compose -f compose.pc.yaml up --detach
+    docker compose -f compose.rosbot.yaml up
     ```
