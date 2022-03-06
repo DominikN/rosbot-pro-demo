@@ -13,11 +13,11 @@ services:
     network_mode: host
     ipc: host
     runtime: nvidia
+    volumes: 
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
     environment:
       - ROS_DOMAIN_ID=228
       - DISPLAY
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
-    volumes: 
-      - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ./rosbot_pro.rviz:/root/.rviz2/default.rviz

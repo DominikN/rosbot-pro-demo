@@ -29,19 +29,19 @@ services:
   rosbot:
     image: husarion/rosbot   
     restart: unless-stopped
+    devices:
+      - /dev/ttyS4   # must match environment SERIAL_PORT 
     environment:
       - SERIAL_PORT=/dev/ttyS4 # default: ttyS1 - rosbot2.0; ttyS4 - rosbot2.0 `pro
       - ROS_MASTER_URI=http://ros-master:11311
-    devices:
-      - /dev/ttyS4   # must match environment SERIAL_PORT 
     command: roslaunch --wait rosbot_description rosbot_docker.launch
     
   # ROS Melodic Rplidar
   rplidar:
     image: husarion/rplidar:latest
     restart: unless-stopped
-    environment:
-      - ROS_MASTER_URI=http://ros-master:11311
     devices:
       - /dev/ttyUSB0
+    environment:
+      - ROS_MASTER_URI=http://ros-master:11311
     command: roslaunch --wait rplidar_ros rplidar_a3.launch # For Rosbot 2.0 PRO use roslaunch rplidar_ros rplidar_a3.launch

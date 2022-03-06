@@ -7,15 +7,15 @@ services:
 
   nav2:
     network_mode: service:husarnet
-    environment:
-      - CYCLONEDDS_URI=file:///dds-config.xml
     volumes:
       - ./dds-config.xml:/dds-config.xml
+    environment:
+      - CYCLONEDDS_URI=file:///dds-config.xml
 
   bridge:
     network_mode: service:husarnet
     volumes:
-      - ./dds-config.xml:/dds-config.xml
+      - ./dds-config.xml:/dds-config.xml 
     environment:
       - CYCLONEDDS_URI=file:///dds-config.xml
 

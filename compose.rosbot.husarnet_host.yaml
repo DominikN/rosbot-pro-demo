@@ -7,10 +7,10 @@ services:
 
   nav2:
     network_mode: host
-    environment:
-      - CYCLONEDDS_URI=file:///dds-config.xml
     volumes:
       - ./dds-config.xml:/dds-config.xml
+    environment:
+      - CYCLONEDDS_URI=file:///dds-config.xml
 
   bridge:
     network_mode: host
@@ -22,27 +22,27 @@ services:
       - CYCLONEDDS_URI=file:///dds-config.xml
 
   ros-master:
-    environment:
-      - ROS_IP=172.32.0.102
     networks:
       ros_net:
         ipv4_address: 172.32.0.102
+    environment:
+      - ROS_IP=172.32.0.102
 
   rosbot:
-    environment:
-      - ROS_IP=172.32.0.101
-      - ROS_MASTER_URI=http://172.32.0.102:11311
     networks:
       ros_net:
         ipv4_address: 172.32.0.101
+    environment:
+      - ROS_IP=172.32.0.101
+      - ROS_MASTER_URI=http://172.32.0.102:11311
     
   rplidar:
-    environment:
-      - ROS_IP=172.32.0.100
-      - ROS_MASTER_URI=http://172.32.0.102:11311
     networks:
       ros_net:
         ipv4_address: 172.32.0.100
+    environment:
+      - ROS_IP=172.32.0.100
+      - ROS_MASTER_URI=http://172.32.0.102:11311
 
   # If you have husarnet installed on the host, you can remove
   # "husarnet" service definition from this compose*.yaml file 
