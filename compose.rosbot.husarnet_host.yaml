@@ -6,22 +6,20 @@ version: "2.3"
 services:
 
   nav2:
-    network_mode: service:husarnet
+    network_mode: host
     environment:
       - CYCLONEDDS_URI=file:///dds-config.xml
     volumes:
       - ./dds-config.xml:/dds-config.xml
 
   bridge:
-    network_mode: service:husarnet
+    network_mode: host
     volumes:
       - ./dds-config.xml:/dds-config.xml
     environment:
       - ROS_IP=172.32.0.1
       - ROS_MASTER_URI=http://172.32.0.102:11311
       - CYCLONEDDS_URI=file:///dds-config.xml
-    networks:
-      ros_net:
 
   ros-master:
     environment:
@@ -46,6 +44,8 @@ services:
       ros_net:
         ipv4_address: 172.32.0.100
 
+  # If you have husarnet installed on the host, you can remove
+  # "husarnet" service definition from this compose*.yaml file 
   husarnet:
     image: husarnet/husarnet
     restart: unless-stopped
