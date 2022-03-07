@@ -10,16 +10,17 @@ services:
     build: .
     command: ros2 run demo_nodes_cpp listener
 
-  dds_router:
-    image: ghcr.io/dominikn/ros-galactic-fastdds:latest
+  dds-router-pc:
+    image: husarnet/dds-router
     restart: always
-    network_mode: service:husarnet
+    network_mode: service:husarnet-pc
+    environment:
+      - DS_HOSTNAME=rosbot
     volumes:
       - ./router-config.pc.yaml:/config.yaml
-      - ./wait_for_discovery_server.sh:/wait_for_discovery_server.sh
-    command: bash -c "/wait_for_discovery_server.sh && ddsrouter -c /config.yaml -r 10"
+    command: bash -c "/wait_ds.sh && ddsrouter -c /config.yaml -r 10"
 
-  husarnet:
+  husarnet-pc:
     image: husarnet/husarnet
     restart: on-failure
     volumes:
@@ -33,3 +34,9 @@ services:
     environment:
       - HOSTNAME=rviz
       - JOINCODE=${HUSARNET_JOINCODE}
+
+# Needed if running all compose.*.yaml files on the same host. Thanks to those lines a new subnet for this compose file is created
+networks:
+  default:
+    name: net_pc
+    driver: bridge
