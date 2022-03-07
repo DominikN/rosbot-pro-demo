@@ -15,8 +15,9 @@ services:
     network_mode: service:husarnet
     volumes:
       - ./router-config.rosbot.yaml:/config.yaml
-    command: bash -c "ddsrouter -c /config.yaml -r 10"
-
+      - ./wait_for_discovery_server.sh:/wait_for_discovery_server.sh
+    command: bash -c "/wait_for_discovery_server.sh && ddsrouter -c /config.yaml -r 10"
+    
   husarnet:
     image: husarnet/husarnet
     restart: on-failure
