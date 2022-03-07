@@ -4,10 +4,18 @@ A demo showing how to use ROSbot PRO with Nav2 and RViz
 
 ## Quick start
 
-At first Clone this repo to both: ROSbot PRO and laptop:
+> **Prerequisites**
+>
+> Make sure the right version of firmware for STM32F4 MCU is flashed on ROSbot. To flash the right firmware, open ROSbot's terminal and execute this command:
+> 
+> ```bash 
+> docker run --privileged --rm husarion/rosbot:latest ./flash_firmware_diff.sh
+> ```
+
+Clone this repo to both ROSbot PRO and laptop:
 
 ```
-git clone git@github.com:DominikN/rosbot-pro-demo.git
+git clone https://github.com/dominikn/rosbot-pro-demo.git
 ```
 
 ... and choose one of the following network configurations:
@@ -77,6 +85,5 @@ git clone git@github.com:DominikN/rosbot-pro-demo.git
 
     ```bash
     xhost local:root
-    docker compose -f compose.pc.yaml up --detach
-    docker compose -f compose.rosbot.yaml up
+    docker compose -f compose.pc.yaml-f compose.rosbot.yaml up
     ```
