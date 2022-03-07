@@ -1,6 +1,6 @@
 # Quick Start
 # $ xhost local:root
-# $ docker compose -f compose.pc.yaml up
+# $ docker compose -f compose.pc-gpu.yaml up
 
 version: "2.3"
 
