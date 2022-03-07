@@ -7,7 +7,9 @@ allowlist:
     type: "sensor_msgs::msg::dds_::LaserScan_"
   - name: "rt/tf"
     type: "tf2_msgs::msg::dds_::TFMessage_"
-
+  - name: "rt/chatter1"
+    type: "std_msgs::msg::dds_::String_"
+    
 internal_partipant:
   type: local
   domain: 0

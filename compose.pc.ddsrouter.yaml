@@ -6,6 +6,10 @@ version: "2.3"
 
 services:
 
+  listener:
+    build: .
+    command: ros2 run demo_nodes_cpp listener
+
   dds_router:
     image: ghcr.io/dominikn/ros-galactic-fastdds:latest
     restart: always
