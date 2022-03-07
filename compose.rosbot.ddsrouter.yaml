@@ -5,7 +5,7 @@ version: "2.3"
 
 services:
 
-  listener:
+  talker:
     build: .
     command: ros2 run demo_nodes_cpp talker
 
