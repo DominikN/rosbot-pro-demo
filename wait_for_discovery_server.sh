@@ -2,7 +2,7 @@
 
 echo "Waiting for \"rosbot\" host to be available in /etc/hosts"
 
-while [[ $(grep 'rosbotr' /etc/hosts | wc -l) -eq 0 ]]; do 
+while [[ $(grep 'rosbot' /etc/hosts | wc -l) -eq 0 ]]; do 
     sleep 1
 done
 
