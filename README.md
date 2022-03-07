@@ -85,5 +85,5 @@ git clone https://github.com/dominikn/rosbot-pro-demo.git
 
     ```bash
     xhost local:root
-    docker compose -f compose.pc.yaml-f compose.rosbot.yaml up
+    docker compose -f compose.pc.yaml -f compose.rosbot.yaml up
     ```
