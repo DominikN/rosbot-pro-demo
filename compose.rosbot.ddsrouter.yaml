@@ -34,8 +34,8 @@ services:
       - HOSTNAME=rosbot
       - JOINCODE=${HUSARNET_JOINCODE}
 
-# Needed if running all compose.*.yaml files on the same host. Thanks to those lines a new subnet for this compose file is created
-networks:
-  default:
-    name: net_rosbot
-    driver: bridge
+# # Needed if running all compose.*.yaml files on the same host. Thanks to those lines a new subnet for this compose file is created
+# networks:
+#   default:
+#     name: net_rosbot
+#     driver: bridge
