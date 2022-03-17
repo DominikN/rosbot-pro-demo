@@ -8,17 +8,20 @@ services:
 
   listener:
     build: .
+    # ipc: host
     command: ros2 run demo_nodes_cpp listener
 
   dds-router-pc:
     image: husarnet/dds-router
     restart: always
     network_mode: service:husarnet-pc
+    # ipc: host
+    # shm_size: '2gb'
     environment:
       - DS_HOSTNAME=rosbot
     volumes:
-      - ./router-config.pc.yaml:/config.yaml
-    command: bash -c "/wait_ds.sh && ddsrouter -c /config.yaml -r 10"
+      - ./router-config-v2.pc.yaml:/config.yaml
+    command: bash -c "wait_ds.sh && ddsrouter -c /config.yaml -r 10"
 
   husarnet-pc:
     image: husarnet/husarnet

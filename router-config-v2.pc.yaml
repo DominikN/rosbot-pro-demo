@@ -1,0 +1,33 @@
+version: v2.0
+
+builtin:
+  - name: "rt/chatter"
+    type: "std_msgs::msg::dds_::String_"
+
+allowlist:
+  
+  # - name: "*"
+  - name: "rt/chatter"
+    type: "std_msgs::msg::dds_::String_"
+
+participants:
+  
+  - name: LocalParticipant
+    kind: local
+    domain: 0
+
+  - name: ClientWAN
+    kind: local-discovery-server
+    discovery-server-guid:
+      id: 2
+      ros-discovery-server: true
+    connection-addresses:
+      - discovery-server-guid:
+          id: 1
+          ros-discovery-server: true
+        addresses:
+          - domain: rosbot
+            port: 11811
+            transport: udp
+
+      
