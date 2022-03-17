@@ -18,7 +18,6 @@ services:
     volumes:
       - ./router-config-v2.rosbot.yaml:/config.yaml
     command: bash -c "wait_ds.sh && ddsrouter -c /config.yaml -r 10"
-    # command: bash -c "wait_ds.sh && ddsrouter"
     
   husarnet-rosbot:
     image: husarnet/husarnet
