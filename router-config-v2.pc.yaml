@@ -16,12 +16,18 @@ participants:
     kind: local
     domain: 0
 
-  - name: ServerWAN
+  - name: ClientWAN
     kind: local-discovery-server
     discovery-server-guid:
-      id: 1
+      id: 2
       ros-discovery-server: true
-    listening-addresses:
-      - domain: rosbot
-        port: 11811
-        transport: udp
+    connection-addresses:
+      - discovery-server-guid:
+          id: 1
+          ros-discovery-server: true
+        addresses:
+          - domain: rosbot
+            port: 11811
+            transport: udp
+
+      
