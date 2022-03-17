@@ -1,0 +1,21 @@
+version: v2.0
+
+allowlist:
+  
+  - name: "*"
+
+participants:
+  
+  - name: LocalParticipant
+    kind: local
+    domain: 0
+
+  - name: DiscoveryServerParticipant
+    kind: local-discovery-server
+    discovery-server-guid:
+      id: 1
+      ros-discovery-server: true
+    listening-addresses:
+      - domain: rosbot
+        port: 11811
+        transport: udp
