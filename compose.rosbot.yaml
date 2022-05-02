@@ -5,9 +5,15 @@ version: "2.3"
 
 services:
 
-  # ROS Galactic
+  rplidar:
+    image: husarion/rplidar:galactic
+    restart: unless-stopped
+    devices:
+      - /dev/ttyUSB0
+    command: roslaunch --wait rplidar_ros rplidar_a3.launch # For Rosbot 2.0 PRO use roslaunch rplidar_ros rplidar_a3.launch
+
   nav2:
-    image: husarion/nav2:galactic-latest
+    image: husarion/nav2:galactic
     restart: unless-stopped
     command: ros2 launch husarion_nav2 bringup_both.launch.py
 
@@ -36,12 +42,3 @@ services:
       - ROS_MASTER_URI=http://ros-master:11311
     command: roslaunch --wait rosbot_description rosbot_docker.launch
     
-  # ROS Melodic Rplidar
-  rplidar:
-    image: husarion/rplidar:latest
-    restart: unless-stopped
-    devices:
-      - /dev/ttyUSB0
-    environment:
-      - ROS_MASTER_URI=http://ros-master:11311
-    command: roslaunch --wait rplidar_ros rplidar_a3.launch # For Rosbot 2.0 PRO use roslaunch rplidar_ros rplidar_a3.launch
