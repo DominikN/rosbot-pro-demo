@@ -1,0 +1,41 @@
+# Quick Start
+# $ xhost local:root
+# $ docker compose -f compose.pc.yaml up
+
+version: "2.3"
+
+services:
+
+  # ROS Galactic
+  rviz:
+    image: husarion/rviz2:galactic
+    restart: unless-stopped
+    runtime: nvidia
+    network_mode: service:husarnet-pc
+    depends_on:
+      - husarnet-pc
+    volumes:
+      - ./secret/dds-config.xml:/dds-config.xml
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./rosbot_pro.rviz:/root/.rviz2/default.rviz
+    environment:
+      - DISPLAY
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
+
+  husarnet-pc:
+    image: husarnet/husarnet
+    restart: unless-stopped
+    volumes:
+      - /var/lib/husarnet
+      - ./secret/id_rviz:/var/lib/husarnet/id
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0 
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    environment:
+      - HOSTNAME=rviz
+      - JOINCODE=${HUSARNET_JOINCODE}
