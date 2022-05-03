@@ -29,7 +29,8 @@ services:
 
   # ROS Noetic + ROS 2 Galactic
   bridge:
-    image: ros:galactic-ros1-bridge
+    # image: ros:galactic-ros1-bridge
+    build: .
     restart: unless-stopped
     network_mode: service:husarnet
     volumes:
