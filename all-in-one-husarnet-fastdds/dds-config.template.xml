@@ -14,20 +14,18 @@
                     <transport_id>udpv6_transport</transport_id>
                 </userTransports>
                 <useBuiltinTransports>false</useBuiltinTransports>
-                <builtin>
-                    <initialPeersList>
-                        <locator>
-                            <udpv6>
-                                <address>rviz</address>
-                            </udpv6>
-                        </locator>
-                        <locator>
-                            <udpv6>
-                                <address>rosbot</address>
-                            </udpv6>
-                        </locator>    
-                    </initialPeersList>
-                </builtin>
+                <defaultUnicastLocatorList>
+                    <locator>
+                        <udpv6>
+                            <address>rviz</address>
+                        </udpv6>
+                    </locator>
+                    <locator>
+                        <udpv6>
+                            <address>rosbot</address>
+                        </udpv6>
+                    </locator>
+                </defaultUnicastLocatorList>
             </rtps>
         </participant>
     </profiles>
