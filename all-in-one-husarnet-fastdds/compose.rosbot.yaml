@@ -5,6 +5,16 @@ version: "2.3"
 
 services:
 
+  listener:
+    build:
+      context: .
+      dockerfile: Dockerfile.chatter
+    volumes:
+      - ./secret/dds-config.xml:/dds-config.xml
+    environment:
+      - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
+    command: ros2 run demo_nodes_cpp listener
+
   rplidar:
     image: husarion/rplidar:galactic
     restart: unless-stopped
