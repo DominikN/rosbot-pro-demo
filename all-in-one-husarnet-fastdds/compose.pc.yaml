@@ -10,6 +10,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.chatter
+    network_mode: service:husarnet-pc
     volumes:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:

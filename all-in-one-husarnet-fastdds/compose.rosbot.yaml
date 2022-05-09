@@ -9,6 +9,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.chatter
+    network_mode: service:husarnet-rosbot
     volumes:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
@@ -18,7 +19,7 @@ services:
   rplidar:
     image: husarion/rplidar:galactic
     restart: unless-stopped
-    network_mode: service:husarnet
+    network_mode: service:husarnet-rosbot
     devices:
       - /dev/ttyUSB0
     volumes:
@@ -30,25 +31,28 @@ services:
   nav2:
     image: husarion/nav2:galactic
     restart: unless-stopped
-    network_mode: service:husarnet
+    network_mode: service:husarnet-rosbot
     volumes:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
-    command: ros2 launch husarion_nav2 bringup_both.launch.py
+    command: ros2 launch husarion_nav2 navigation2_bringup.launch.py
 
   # ROS Noetic + ROS 2 Galactic
   bridge:
     # image: ros:galactic-ros1-bridge
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.ros1_bridge
     restart: unless-stopped
-    network_mode: service:husarnet
+    network_mode: service:husarnet-rosbot
     volumes:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
       - ROS_MASTER_URI=http://ros-master:11311
     command: ros2 run ros1_bridge dynamic_bridge
+    # command: sleep 3600
 
   # ROS Master (using custom port in case Master is already running on host OS)
   ros-master:
@@ -67,7 +71,7 @@ services:
       - ROS_MASTER_URI=http://ros-master:11311
     command: roslaunch --wait rosbot_description rosbot_docker.launch
     
-  husarnet:
+  husarnet-rosbot:
     image: husarnet/husarnet
     restart: unless-stopped
     volumes:
