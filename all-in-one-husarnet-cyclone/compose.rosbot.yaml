@@ -30,9 +30,8 @@ services:
       - CYCLONEDDS_URI=file:///dds-config.xml
     command: >
       ros2 launch husarion_nav2 navigation2_bringup.launch.py
-        use_slam:=False 
+        use_slam:=True 
         use_auto_localization:=False
-        use_sim_time:=False
 
   # ROS Noetic + ROS 2 Galactic
   bridge:
