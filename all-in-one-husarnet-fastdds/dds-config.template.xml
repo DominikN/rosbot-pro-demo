@@ -5,7 +5,13 @@
             <transport_descriptor>
                 <transport_id>udpv6_transport</transport_id>
                 <type>UDPv6</type>
-                <maxInitialPeersRange>20</maxInitialPeersRange>
+                <interfaceWhiteList>
+                    <address>rviz</address>
+                    <address>rosbot</address>
+                    <address>127.0.0.1</address>
+                </interfaceWhiteList>
+                <maxInitialPeersRange>40</maxInitialPeersRange>
+                <!-- <non_blocking_send>true</non_blocking_send> -->
             </transport_descriptor>
         </transport_descriptors>
 
@@ -14,7 +20,7 @@
                 <userTransports>
                     <transport_id>udpv6_transport</transport_id>
                 </userTransports>
-                <useBuiltinTransports>false</useBuiltinTransports>
+                <!-- <useBuiltinTransports>false</useBuiltinTransports> -->
                 <defaultUnicastLocatorList>
                     <locator>
                         <udpv6>
@@ -41,10 +47,6 @@
                         </locator>
                     </initialPeersList>
 
-                    <!-- If all the peers are known beforehand and have been configured on the Initial Peers List, all multicast traffic can be completely disabled. -->
-                    <!-- <metatrafficUnicastLocatorList>
-                        <locator/>
-                    </metatrafficUnicastLocatorList> -->
                     <metatrafficUnicastLocatorList>
                         <locator>
                             <udpv6>
@@ -56,9 +58,8 @@
                                 <address>rosbot</address>
                             </udpv6>
                         </locator>
-                    </metatrafficUnicastLocatorList>                    
+                    </metatrafficUnicastLocatorList>     
                 </builtin>
-
             </rtps>
         </participant>
     </profiles>

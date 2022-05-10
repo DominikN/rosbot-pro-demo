@@ -15,7 +15,7 @@ services:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
-      - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
+      # - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
     command: ros2 run demo_nodes_cpp listener
 
   rplidar:
@@ -29,7 +29,7 @@ services:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
-      - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
+      # - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
     command: ros2 launch rplidar_ros2 rplidar_a3_launch.py
 
   nav2:
@@ -41,7 +41,7 @@ services:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
-      - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
+      # - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
     command: >
       ros2 launch husarion_nav2 navigation2_bringup.launch.py
         use_slam:=True 
@@ -61,7 +61,7 @@ services:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
-      - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
+      # - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
       - ROS_MASTER_URI=http://ros-master:11311
     command: ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     # command: sleep 3600

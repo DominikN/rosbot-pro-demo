@@ -5,7 +5,9 @@ A demo showing how to use ROSbot PRO with Nav2 and RViz.
 
 > Tip: synchronize project folder between laptop and ROSbot PR
 >
-> `rsync -avzh ./ husarion@192.168.8.187:/home/husarion/temp/rosbot-pro-demo`
+> `rsync -avzh ./ husarion@10.5.10.164:/home/husarion/temp/rosbot-pro-demo`
+> or
+> `while inotifywait -r -e modify,create,delete,move ./; do rsync -avzh ./ husarion@10.5.10.164:/home/husarion/temp/rosbot-pro-demo/; done`
 
 ## Quick start
 
