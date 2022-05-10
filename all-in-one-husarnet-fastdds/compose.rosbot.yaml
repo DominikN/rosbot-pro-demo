@@ -10,33 +10,43 @@ services:
       context: .
       dockerfile: Dockerfile.chatter
     network_mode: service:husarnet-rosbot
+    ipc: service:husarnet-rosbot
     volumes:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
+      - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
     command: ros2 run demo_nodes_cpp listener
 
   rplidar:
     image: husarion/rplidar:galactic
     restart: unless-stopped
     network_mode: service:husarnet-rosbot
+    ipc: service:husarnet-rosbot
     devices:
       - /dev/ttyUSB0
     volumes:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
+      - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
     command: ros2 launch rplidar_ros2 rplidar_a3_launch.py
 
   nav2:
     image: husarion/nav2:galactic
     restart: unless-stopped
     network_mode: service:husarnet-rosbot
+    ipc: service:husarnet-rosbot
     volumes:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
-    command: ros2 launch husarion_nav2 navigation2_bringup.launch.py
+      - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
+    command: >
+      ros2 launch husarion_nav2 navigation2_bringup.launch.py
+        use_slam:=True 
+        use_auto_localization:=False
+        use_sim_time:=False
 
   # ROS Noetic + ROS 2 Galactic
   bridge:
@@ -46,12 +56,14 @@ services:
       dockerfile: Dockerfile.ros1_bridge
     restart: unless-stopped
     network_mode: service:husarnet-rosbot
+    ipc: service:husarnet-rosbot
     volumes:
       - ./secret/dds-config.xml:/dds-config.xml
     environment:
       - FASTRTPS_DEFAULT_PROFILES_FILE=/dds-config.xml
+      - RMW_FASTRTPS_PUBLICATION_MODE=SYNCHRONOUS
       - ROS_MASTER_URI=http://ros-master:11311
-    command: ros2 run ros1_bridge dynamic_bridge
+    command: ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     # command: sleep 3600
 
   # ROS Master (using custom port in case Master is already running on host OS)
@@ -73,12 +85,15 @@ services:
     
   husarnet-rosbot:
     image: husarnet/husarnet
+    ipc: shareable
     restart: unless-stopped
     volumes:
       - /var/lib/husarnet
       - ./secret/id_rosbot:/var/lib/husarnet/id
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0 
+      - net.ipv6.ip6frag_time=3
+      - net.ipv6.ip6frag_high_thresh=134217728
     cap_add:
       - NET_ADMIN
     devices:
