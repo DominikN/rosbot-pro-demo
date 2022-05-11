@@ -1,20 +1,36 @@
 ## Generate `Husarnet id` for ROSbot and Laptop stack
 
 ```
-docker run --rm -it husarnet/husarnet:latest husarnet genid > id_rosbot
-```
-```
-docker run --rm -it husarnet/husarnet:latest husarnet genid > id_rviz
+./generate-dds-config.sh
 ```
 
-## Prepare `dds-config.xml`
+## Get Husarnet Join Code
+
+and paste it inside `.env` file in this repo. It should look like this:
 
 ```
-sed -r 's/([a-f0-9:]*)\s.*/\1/g' id_rosbot
+HUSARNET_JOINCODE=fc94:b01d:1803:8dd8:b293:5c7d:7639:932a/xxxxxxxxxxxxxxxxxxxxxx
 ```
 
-```bash
-sed -r "s/rviz/$(sed -r 's/([a-f0-9:]*)\s.*/\1/g' id_rviz)/g" dds-config.template.xml > dds-config.xml
-sed -r "s/rosbot/$(sed -r 's/([a-f0-9:]*)\s.*/\1/g' id_rosbot)/g" dds-config.template.xml > dds-config.xml
+## Copy this folder to ROSbot XL
+
+```
+rsync -avzh ./ husarion@10.5.10.164:/home/husarion/temp/rosbot-pro-demo
 ```
 
+> `10.5.10.164` is ROSbot's IP addr in the local network, replace it with your own
+
+## Runnning the project
+
+### On laptop
+
+```
+xhost local:root
+docker compose -f compose.pc.yaml up
+```
+
+### On ROSbot
+
+```
+docker compose -f compose.rosbot.yaml up
+```
